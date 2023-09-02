@@ -5,7 +5,7 @@ install required libraries:
 2)opencv-python
 3)pandas
 
--> 'pip install face_recognition, opencv-python, pandas'
+-> `pip install face_recognition, opencv-python, pandas`
 
 It has two function mainly:
 Picture():- This function will process the given image and compare it with the data present in Images Folder and return a list of persons present.
