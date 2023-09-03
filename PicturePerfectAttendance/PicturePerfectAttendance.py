@@ -14,11 +14,10 @@ class Attendance:
         self.ImageName = []
         self.Img_array = []
         self.encode_images = []
-        self.images = os.listdir("FlaskApp/photos")
+        self.images = os.listdir("images")
         for i in self.images:
-            self.load_images.append(face_recognition.load_image_file(f'FlaskApp/photos/{i}'))
+            self.load_images.append(face_recognition.load_image_file(f'images/{i}'))
             self.ImageName.append(i)
-            #self.Img_array.append(np.array(self.load_images[-1]))
             self.Image_locations.append(face_recognition.face_locations(self.load_images[-1]))
             self.encode_images.append(face_recognition.face_encodings(self.load_images[-1], self.Image_locations[-1])[0])
         self.face_locations = []
@@ -38,7 +37,6 @@ class Attendance:
         for encoding in self.face_encodings:
             self.matches = face_recognition.compare_faces(self.encode_images, encoding, tolerance=0.6)
             self.face_distance = face_recognition.face_distance(self.encode_images, encoding)
-            #print(self.ImageName, "\n", self.matches,"\n",self.face_locations,"\n", self.Image_locations)
             self.best_match_index = np.argmin(self.face_distance)
             if self.matches[self.best_match_index]:
                 self.name.append(self.ImageName[self.best_match_index])
@@ -46,7 +44,6 @@ class Attendance:
     def Video(self, video):
         cap = cv2.VideoCapture(video)
         success = 1
-
         while success:
             success, self.frame = cap.read()
             if success:
@@ -56,7 +53,6 @@ class Attendance:
                 for encoding in self.face_encodings:
                     self.matches = face_recognition.compare_faces(self.encode_images, encoding, tolerance=0.6)
                     self.face_distance = face_recognition.face_distance(self.encode_images, encoding)
-                    #print(self.ImageName, "\n", self.matches,"\n",self.face_locations,"\n", self.Image_locations)
                     self.best_match_index = np.argmin(self.face_distance)
                     if self.matches[self.best_match_index]:
                         self.name.append(self.ImageName[self.best_match_index])
@@ -78,9 +74,9 @@ class Attendance:
 
 if __name__ == '__main__':
     ob = Attendance()
-    ob.Picture("FlaskApp/photos/group.jpg", resizeRange=1)
+    ob.Picture("images/group.jpg", resizeRange=1)
     names = []
-    # ob.Video('video1.mp4')
+    # ob.Video('Video/video1.mp4')
     for i in ob.name:
         names.append(i.split('.')[0])
     print(names)
